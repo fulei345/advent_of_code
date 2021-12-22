@@ -65,7 +65,6 @@ with open(filename) as f:
     basins_size.sort(reverse=True)
     for index in range(3):
         multi *= basins_size[index]
-    print(basins_size)
     result1 = len(low_points) + sum(low_points)
     print(result1)
     print(multi)
