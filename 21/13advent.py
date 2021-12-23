@@ -5,7 +5,6 @@ def main():
     point_list, fold_list = load_data(FILENAME)
 
     maximum = 0
-
     for fold in fold_list:
         point_list, maximum = fold_one(point_list,fold)
 
@@ -17,9 +16,7 @@ def main():
             else:
                 line += '.'
         print(line)
-
     print(len(point_list))
-
 
 def fold_one(points: list, fold: tuple):
     temp_points = []
