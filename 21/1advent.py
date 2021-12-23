@@ -1,4 +1,4 @@
-filename = "input1.txt"
+filename = "input/input1.txt"
 
 def day1_pt1(nums):
     return increasing(nums, 1)

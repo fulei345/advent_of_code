@@ -1,4 +1,4 @@
-filename = "input2.txt"
+filename = "input/input2.txt"
 
 with open(filename) as f:
     liste = f.read().splitlines()

@@ -1,5 +1,5 @@
 import re
-filename = "input9.txt"
+filename = "input/input9.txt"
 #filename = "test9.txt"
 
 mapps = []

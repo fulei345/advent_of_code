@@ -1,6 +1,6 @@
 import re
-filename = "input11.txt"
-filename = "test11.txt"
+filename = "input/input11.txt"
+filename = "input/test11.txt"
 
 dir = {
     "e":  [ 1, 0],

@@ -1,4 +1,4 @@
-filename = "input4.txt"
+filename = "input/input4.txt"
 
 
 def run_whole_board(board_list, bingo_board_list, role_call_list):

@@ -1,4 +1,4 @@
-filename = "input10.txt"
+filename = "input/input10.txt"
 #filename = "test10.txt"
 
 with open(filename) as f:

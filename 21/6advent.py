@@ -1,4 +1,4 @@
-filename = "input6.txt"
+filename = "input/input6.txt"
 
 # simulate n timestep on a liste
 def simulate(input, n):

@@ -1,4 +1,4 @@
-filename = "input3.txt"
+filename = "input/input3.txt"
 
 def most_common(index_liste, index, liste):
     count = [0, 0]

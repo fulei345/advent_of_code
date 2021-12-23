@@ -1,4 +1,4 @@
-filename = "input8.txt"
+filename = "input/input8.txt"
 
 results = []
 

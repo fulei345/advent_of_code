@@ -1,4 +1,4 @@
-filename = "input5.txt"
+filename = "input/input5.txt"
 
 def count_overlapping(input, should_diagonal):
      # Iniatilses the array

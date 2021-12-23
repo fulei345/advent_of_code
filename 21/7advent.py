@@ -1,4 +1,4 @@
-filename = "input7.txt"
+filename = "input/input7.txt"
 
 def bruteforce(input):
     smallest_sum = 10000000000
