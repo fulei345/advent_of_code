@@ -23,9 +23,7 @@ def find_common(list):
                 power_of_two = ascii-96
             else:
                 power_of_two = ascii-38
-            if int(number) & 2**power_of_two != 0:
-                continue
-            number += 2**power_of_two
+            number = number | 2**power_of_two
         number_list.append(number)
         
     result = number_list[0]
