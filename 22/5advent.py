@@ -1,44 +1,52 @@
 def main(filename):
-    count_1 = 0
-    count_2 = 0
+    second_part = False
+    lines = []
+    stacks = []
     with open(filename) as f:
         for line in f:
-            pair_of_elves = line[0:len(line)-1]
-            temp_list = pair_of_elves.split(",")
-            first_section, second_section = temp_list[0], temp_list[1]
-            
-            first_range = first_section.split("-")
-            second_range = second_section.split("-")
-
-            first_list = [int(first_range[0]),int(first_range[1])]
-            second_list = [int(second_range[0]),int(second_range[1])]
-
-            if find_overlap_full(first_list, second_list):
-                count_1 += 1
-                count_2 += 1
+            # First part
+            if not second_part:
+                if line != "\n":
+                    lines.append(line[0:len(line)-1])
+                else:
+                    second_part = True
+                    num_of_stacks = int(lines[-1][-2])
+                    lines.pop()
+                    for _ in range(num_of_stacks):
+                        stacks.append([])
+                    # For the number of cargo on the stack
+                    for cargo_line in lines[::-1]:
+                        for i in range(num_of_stacks):
+                            if cargo_line[i*3+i+1] != " ":
+                                stacks[i].append(cargo_line[i*3+i+1])
             else:
-                if find_overlap(first_list, second_list):
-                    count_2 += 1
+                # Second part lines
+                all = line[0:len(line)-1]
+                move_temp = all.split("from")
+                move_var = int(move_temp[0].split("move")[1])
+                from_temp = move_temp[1].split("to")
+                from_var = int(from_temp[0])-1
+                to_var = int(from_temp[1])-1
 
-    print(count_1)
-    print(count_2)
+                part2_9001(stacks, move_var, from_var, to_var)
+                # part1_9000(stacks, move_var, from_var, to_var)
 
-def find_overlap_full(first_list, second_list):
-    if first_list[0] <= second_list[0] and first_list[1] >= second_list[1]:
-        return True
-    elif first_list[0] >= second_list[0] and first_list[1] <= second_list[1]:
-        return True
-    else:
-        return False
+    for stack in stacks:
+        print(stack[-1],end = '')
 
-def find_overlap(first_list, second_list):
-    if first_list[0] <= second_list[0]:
-        return first_list[1] >= second_list[0]
-    elif first_list[0] >= second_list[0]:
-        return first_list[0] <= second_list[1]
-        
+def tail(xs, n):
+    return xs[-n:]
+
+                
+def part1_9000(stacks, move_var, from_var, to_var):
+    for _ in range(move_var):
+        stacks[to_var].append(stacks[from_var].pop())
+
+def part2_9001(stacks: list, move_var: int, from_var: int, to_var: int):
+    stacks[to_var].extend(tail(stacks[from_var],move_var))
+    stacks[from_var] = stacks[from_var][:-move_var]
 
 
 if __name__ == "__main__":
-    main("input/test5.txt")
+    # main("input/test5.txt")
     main("input/input5.txt")
