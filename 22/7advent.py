@@ -36,6 +36,8 @@ def main(filename):
     all_folders.append(count_folder(cd))
     all_folders.sort()
 
+    print(sum([num for num in all_folders if num <= 100_000]))
+
     # Calc space needed to delete
     total_size = 70000000
     upgrade = 30000000
@@ -51,24 +53,13 @@ def main(filename):
         temp_total = all_folders[index]
     print(all_folders[index+1])
 
-    print(part1(cd))
-
-# Find size of small folders
-def part1(cd):
-    temp = 0
-    for key, value in cd.dirs.items():
-        temp += part1(cd.dirs[key])
-    if 100000 >= cd.fullsize:
-        temp += cd.fullsize
-    return temp
-
 # Count files in folder and add to parent
 def count_folder(cd):
     for key, value in cd.files.items():
-        cd.fullsize += value
+        cd.total_size += value
     if cd.parent != None:
-        cd.parent.fullsize += cd.fullsize
-    return cd.fullsize
+        cd.parent.total_size += cd.total_size
+    return cd.total_size
 
 class Directory:
     # Name of the folder
@@ -80,8 +71,7 @@ class Directory:
         self.files = dict()
         self.parent = parent
         self.dirs = dict()
-        self.under = False
-        self.fullsize = 0
+        self.total_size = 0
         
     def __str__(self) -> str:
         result = "Name: "+ self.name + "\n"
@@ -91,7 +81,7 @@ class Directory:
         result += "Dirs: "
         for key, value in self.dirs.items():
             result += key + " "
-        result += "\nFullsize: " + str(self.fullsize) 
+        result += "\n Total size: " + str(self.total_size) 
         return result
 
 
