@@ -30,7 +30,7 @@ def main(filename):
     print(sum(result))
 
 def check_sprite(cycle, x_value):
-    return x_value-1 <=  cycle % 40 <= x_value+1
+    return x_value-1 <=  (cycle % 40) -1  <= x_value+1
 
 def make_cycle(cycle, x_value, result, index):
     index_r = index
@@ -75,6 +75,7 @@ def main2(filename):
 
 
 if __name__ == "__main__":
+    main("input/input10.txt")
+    main("input/input10.txt")
     main2("input/test10.txt")
     main2("input/input10.txt")
-    # main("input/input10.txt")
