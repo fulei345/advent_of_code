@@ -66,5 +66,5 @@ def main(filename, length):
 if __name__ == "__main__":
     main("input/test9.txt", 2)
     main("input/input9.txt", 2)
-    main("input/test92.txt", 10)
+    main("input/test9_2.txt", 10)
     main("input/input9.txt", 10)
