@@ -1,5 +1,5 @@
 
-def main(filename, first_part):
+def main(filename, first_part, iterations):
     monkeys = []
     all_index =0
     with open(filename) as f:
@@ -16,22 +16,11 @@ def main(filename, first_part):
                         temp = monkeyline[i].split(",")[0]
                         items.append(int(temp))
                 elif monkeyline[2] == "Operation:":
-                #     two_old = True
-                #     if monkeyline[-1].isnumeric():
-                #         two_old = False
-                #         num = int(monkeyline[-1])
-                #     if monkeyline[-2] == "+":
-                #         if two_old:
-                #             operation = lambda old : old + old
-                #         else:
-                #             operation = lambda old : old + num
-                #             print("+",num, all_index)
-                #     elif monkeyline[-2] == "*":
-                #         if two_old:
-                #             operation = lambda old : old * old
-                #         else:
-                #             operation = lambda old : old * num
-                #             print("*", num, all_index)
+                    operation = monkeyline[-2]
+                    if monkeyline[-1].isnumeric():
+                        num = int(monkeyline[-1])
+                    else:
+                        num = monkeyline[-1]
                     pass
                 elif monkeyline[2] == "Test:":
                     module = int(monkeyline[-1])
@@ -43,7 +32,7 @@ def main(filename, first_part):
                     false = int(monkeyline[-1])
 
             else:
-                temp = Monkey(all_index, items, module, true, false)
+                temp = Monkey(all_index, items, module, true, false, operation, num)
                 monkeys.append(temp)
                 all_index += 1
 
@@ -55,30 +44,9 @@ def main(filename, first_part):
             monkey.monkeys = monkeys
             monkey.product = product
 
-        if len(monkeys) == 4:
-            monkeys[0].operation = lambda old : old * 19
-            monkeys[1].operation = lambda old : old + 6
-            monkeys[2].operation = lambda old : old * old
-            monkeys[3].operation = lambda old : old + 3
-        else:
-            monkeys[0].operation = lambda old : old * 3
-            monkeys[1].operation = lambda old : old + 2
-            monkeys[2].operation = lambda old : old + 1
-            monkeys[3].operation = lambda old : old + 5
-            monkeys[4].operation = lambda old : old + 4
-            monkeys[5].operation = lambda old : old + 8
-            monkeys[6].operation = lambda old : old * 7
-            monkeys[7].operation = lambda old : old * old
-
-        if first_part:
-
-            for i in range(20):
-                for monkey in monkeys:
-                    monkey.inspect(first_part)
-        else:
-            for i in range(10000):
-                for monkey in monkeys:
-                    monkey.inspect(first_part)
+        for i in range(iterations):
+            for monkey in monkeys:
+                monkey.inspect(first_part)
 
         insp_list = []
         for monkey in monkeys:
@@ -91,11 +59,12 @@ def main(filename, first_part):
         print("-------------------------------------------")
         
 class Monkey:
-    def __init__(self, index: int, items: list, module: int, true: int, false: int ):
+    def __init__(self, index: int, items: list, module: int, true: int, false: int, operation: str, operation_num: any):
         self.index = index
         self.items = items
         self.monkeys = []
-        self.operation = None
+        self.operation = operation
+        self.operation_num = operation_num
         self.module = module
         self.true = true
         self.false = false
@@ -106,12 +75,21 @@ class Monkey:
         if len(self.items) == 0:
             return False
         for item in self.items:
-            temp = self.operation(item)
+            if self.operation_num == "old":
+                if self.operation == "*":
+                    temp = item * item
+                else:
+                    temp = item + item
+            else:
+                if self.operation == "*":
+                    temp = item * self.operation_num
+                else:
+                    temp = item + self.operation_num
+
             if first_part:
                 temp = temp // 3
             else:
                 temp = temp % self.product
-
             if  temp % self.module == 0:
                 self.monkeys[self.true].items.append(temp) 
             else:
@@ -122,7 +100,7 @@ class Monkey:
 
 
 if __name__ == "__main__":
-    main("input/test11.txt",True)
-    main("input/input11.txt",True)
-    main("input/test11.txt",False)
-    main("input/input11.txt",False)
+    main("input/test11.txt",True, 20)
+    main("input/input11.txt",True, 20)
+    main("input/test11.txt",False, 10000)
+    main("input/input11.txt",False, 10000)
