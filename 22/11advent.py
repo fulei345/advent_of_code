@@ -1,7 +1,6 @@
 
 def main(filename, first_part, iterations):
     monkeys = []
-    all_index =0
     with open(filename) as f:
         for line in f:
             monkeyline = line[0:len(line)-1]
@@ -32,11 +31,10 @@ def main(filename, first_part, iterations):
                     false = int(monkeyline[-1])
 
             else:
-                temp = Monkey(all_index, items, module, true, false, operation, num)
+                temp = Monkey(items, module, true, false, operation, num)
                 monkeys.append(temp)
-                all_index += 1
 
-        temp = Monkey(all_index, items, module, true, false, operation, num)
+        temp = Monkey(items, module, true, false, operation, num)
         monkeys.append(temp)
         
         product = 1
@@ -62,8 +60,7 @@ def main(filename, first_part, iterations):
         print("-------------------------------------------")
         
 class Monkey:
-    def __init__(self, index: int, items: list, module: int, true: int, false: int, operation: str, operation_num: any):
-        self.index = index
+    def __init__(self, items: list, module: int, true: int, false: int, operation: str, operation_num: any):
         self.items = items
         self.monkeys = []
         self.operation = operation
