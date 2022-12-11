@@ -36,6 +36,9 @@ def main(filename, first_part, iterations):
                 monkeys.append(temp)
                 all_index += 1
 
+        temp = Monkey(all_index, items, module, true, false, operation, num)
+        monkeys.append(temp)
+        
         product = 1
         for monkey in monkeys:
             product *= monkey.module
