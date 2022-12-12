@@ -96,28 +96,11 @@ def main(filename):
                 temp_line.append(int(tree))
             forrest.append(temp_line)
     
-
-        # Loop over from all sides
-        # North 1
-        # East 2
-        # South 3
-        # West 4
-    seen_trees = 0
     tallest = set()
-
-
     tallest = tallest.union(get_tallest_trees(forrest, 1))
     tallest = tallest.union(get_tallest_trees(forrest, 2))
     tallest = tallest.union(get_tallest_trees(forrest, 3))
     tallest = tallest.union(get_tallest_trees(forrest, 4))
-
-
-    
-    # result = get_tallest_trees(forrest, 2)
-    # print(tallest)
-    # tallest.union(get_tallest_trees(forrest, 3))
-    # tallest.union(get_tallest_trees(forrest, 4))
-
     print(len(tallest))
 
     highest_score = 0

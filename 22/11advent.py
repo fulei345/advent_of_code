@@ -1,11 +1,9 @@
-
 def main(filename, first_part, iterations):
     monkeys = []
     with open(filename) as f:
         for line in f:
             monkeyline = line[0:len(line)-1]
             monkeyline = monkeyline.split(" ")
-
             if len(monkeyline) > 1:
                 if monkeyline[0] == "Monkey":
                     pass
