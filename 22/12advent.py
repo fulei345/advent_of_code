@@ -1,14 +1,16 @@
 def main(filename):
     maze = []
+    start_nodes: list[Node] = []
     with open(filename) as f:
         index = 0
         for line in f:
             l = line[0:len(line)-1]
             temp_line = []
             for i, square in enumerate(l):
-                if square == "S":
-                    start_point = (i,index)
-                    temp_line.append(-1)
+                if square == "S" or square == "a":
+                    temp: Node = Node((i,index), 0, None, 0)
+                    start_nodes.append(temp)
+                    temp_line.append(0)
                 elif square == "E":
                     end_point = (i,index)
                     temp_line.append(26)
@@ -17,20 +19,34 @@ def main(filename):
             maze.append(temp_line)
             index += 1
 
-    # Keep a list of visited
-    # Do not visit again
-    # Distance in x-x and y-y lowest take that
-    # And then just iterate until we are there
+
 
     for line in maze:
         print(line)
 
-    start: Node = Node(start_point, 0, None, -1)
-    highest_score = -1000
-    highest_node = start
+
+    # Part2
+    seen : list[Node] = start_nodes
     frontier: list[Node] = []
-    seen : list[Node] = []
-    seen.append(start)
+    for node in seen:
+        temp = neighbors(node, seen, maze, frontier)
+        frontier.extend(temp)
+    
+    highest_score = -1000
+    for i, node in  enumerate(frontier):
+        if node.calc_score(end_point) > highest_score:
+            highest_node = node
+            highest_score = node.score
+    seen.append(highest_node)
+    frontier.remove(highest_node)
+
+
+    # start: Node = Node(start_point, 0, None, -1)
+    # highest_score = -1000
+    # highest_node = start
+    # frontier: list[Node] = []
+    # seen : list[Node] = []
+    # seen.append(start)
 
     while highest_node.height != 26:
         changed = False
@@ -101,7 +117,7 @@ def get_neighbor(new_x: int, new_y: int, width: int, height: int, node: Node, se
             if new_node != None:
                 if new_node.length > node.length + 1:
                     new_node.prev = node
-                    new_node.lengt = node.length + 1
+                    new_node.length = node.length + 1
             else:
                 frontier_node: Node = check_nodes((new_x,new_y), frontier)
                 if frontier_node != None:
@@ -127,5 +143,5 @@ def distance(current, end):
 
 
 if __name__ == "__main__":
-    # main("22/input/test12.txt")
+    #main("22/input/test12.txt")
     main("22/input/input12.txt")
