@@ -1,5 +1,6 @@
 import unittest
 import re as regex
+import time
 
 # Split on : and split on |
 # Use regex againg and find alle the numbers
@@ -40,6 +41,13 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(main("test04.txt"), 13)
 
 if __name__ == "__main__":
+
+
+    start = time.time()
+
+
     print(main("input04.txt"))
+    end = time.time()
+    print(end - start)
     unittest.main()
     
