@@ -1,15 +1,18 @@
 import unittest
 import re as regex
 
-# First count the winnings on each card then loop over them again
+# Only loops over once
 
 def main(file: str) -> int:
     with open(file) as f:
         liste : list[str] = f.read().splitlines()
         
-        all_cards = []
-        winnings_on_cards = []
-        for y, line in enumerate(liste):
+        temp = liste[0].split(":")[1].split("|")[0]
+        temp = len(regex.findall(r"\d+", temp))
+
+        next_numbers = [0] * (temp + 1)
+        result_sum = 0
+        for line in liste:
             numbers = line.split(":")[1]
             winning, card = numbers.split("|")
             winning = regex.findall(r"\d+", winning)
@@ -19,16 +22,14 @@ def main(file: str) -> int:
             for num in winning:
                 if num in card:
                     points += 1
-            
-            winnings_on_cards.append(points)
-            all_cards.append(1)
-        result_sum = 0
+            result_sum += next_numbers[0] + 1
 
-        for index, num_card in enumerate(all_cards):
-            for i in range(index+1, index+winnings_on_cards[index]+1):
-                all_cards[i] += num_card
-            result_sum += num_card
-            
+            for i in range(1, points + 1):
+                next_numbers[i] += next_numbers[0]+1
+            # Move
+            for i in range(1, len(next_numbers)):
+                next_numbers[i-1] = next_numbers[i]
+            next_numbers[-1] = 0
 
         return result_sum    
         
