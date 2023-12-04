@@ -4,8 +4,31 @@ filename = "input/input1.txt"
 
 import re as regex
 
-dictionary = {"one": "1","two": "2","three": "3","four": "4","five": "5","six": "6", "seven": "7", "eight": "8", "nine": "9"}
-dictionary.keys()
+dictionary : dict = {"one": "1","two": "2",
+                     "three": "3","four": "4",
+                     "five": "5","six": "6",
+                     "seven": "7", "eight": "8",
+                     "nine": "9"}
+
+def main(file: str) -> int:
+    liste : list[str] = f.read().splitlines()
+    result_sum : int = 0
+    for line in liste:
+        first = ""
+        first_index = 99
+        last = ""
+        last_index = -1
+    for index, char in enumerate(line):
+        if char.isdigit():
+            if index < first_index:
+                first = char
+                first_index = index
+            if index > last_index:
+                last = char
+                last_index = index
+        result_sum += int(first + last)
+    return result_sum
+
 with open(filename) as f:
     liste = f.read().splitlines()
     result_sum = 0
@@ -33,4 +56,8 @@ with open(filename) as f:
                     last_index = index
         result_sum += int(first + last)
         print(line + " " + first + " " + last)
-    print(result_sum)
+
+if __name__ == "__main__":
+    main("test01.txt")
+    main("test01_2.txt")
+    main("input01_txt")
