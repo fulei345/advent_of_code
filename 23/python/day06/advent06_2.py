@@ -1,6 +1,7 @@
 import unittest
 import re as regex
 import time
+import math
 
 # Dynamic programming
 
@@ -8,44 +9,29 @@ def main(file: str) -> int:
     with open(file) as f:
         liste : list[str] = f.read().splitlines()
         times = regex.findall(r"\d+", liste[0])
+        times = int("".join(times))
         distances = regex.findall(r"\d+", liste[1])
-        temp = ""
-        for time in times:
-            temp = temp + time
-        times = [int(temp)]
-        temp = ""
-        for distance in distances:
-            temp = temp + distance
-        distances = [int(temp)]
-        
-        result = []
-        for i in range(len(times)):
-            # This is a race
-            result.append(0)
-            for x in range(times[i]):
-                distance = x*(times[i]-x)
-                if distance > distances[i]:
-                    result[i] += 1
-                else:
-                    if result[i] > 1:
-                        break
+        distances = int("".join(distances))
 
-        result_sum = 1
-        for res in result:
-            result_sum *= res
-        return result_sum
+        #(times-second_time)*times - distance = 0
+        # times² - second_time*times - disntace = 0
+        
+        first_x = (-times -  math.sqrt(times ** 2 - 4 * (-1) * -distances)) // (2 * (-1))
+        second_x = (-times +  math.sqrt(times ** 2 - 4 * (-1) * -distances)) // (2 * (-1))
+        
+        return int(first_x - second_x)
 
 class TestStringMethods(unittest.TestCase):
 
-    def testtest(self):
-        self.assertEqual(main("test06.txt"), 71503)
+    #def testtest(self):
+    #    print("Test result")
+    #    self.assertEqual(main("test06.txt"), 71503)
+    
+    def testinput(self):
+        print("Input result")
+        self.assertEqual(main("input06.txt"), 42948149)
 
 if __name__ == "__main__":
 
-
-    start = time.time()
-    print(main("input06.txt"))
-    end = time.time()
-    print(end - start)
     unittest.main()
     
