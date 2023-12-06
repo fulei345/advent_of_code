@@ -23,12 +23,12 @@ def main(file: str) -> int:
 
 class TestStringMethods(unittest.TestCase):
 
-    #def testtest(self):
-    #    print("Test result")
-    #    self.assertEqual(main("test06.txt"), 71503)
+    def testtest(self):
+        print("Test result " + str(71503))
+        self.assertEqual(main("test06.txt"), 71503)
     
     def testinput(self):
-        print("Input result")
+        print("Input result" + str(42948149))
         self.assertEqual(main("input06.txt"), 42948149)
 
 if __name__ == "__main__":
