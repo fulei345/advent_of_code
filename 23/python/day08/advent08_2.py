@@ -1,6 +1,6 @@
 import unittest
 import time
-from math import lcm
+
 
 # Bruteforce metoden er at gå igennem hele node systemet
 # Eller save min vej til hver node som en 
@@ -64,8 +64,15 @@ def main(file: str) -> int:
                 counter += 1
             lcm_list.append(counter)
         
-        # TODO find LCM of lcm list
-        return lcm(lcm_list)
+        lcm = 1
+        for i in lcm_list:
+            lcm = lcm * i // gcd(lcm, i)
+        return lcm
+
+def gcd(n, m):
+    if m == 0:
+        return n
+    return gcd(m, n % m)
 
 
 class TestStringMethods(unittest.TestCase):
