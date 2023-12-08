@@ -1,6 +1,7 @@
 import unittest
 import time
 from functools import cmp_to_key
+import datetime
 
 # Determine type derefter lav en sortering af dem baseret på det
 # Types 0-6
@@ -104,7 +105,7 @@ def main(file: str) -> int:
                 elif c == "J":
                     hand_liste.append(0)
                 elif c == "T":
-                    hand_liste.append(8)
+                    hand_liste.append(9)
                 else:
                     hand_liste.append(int(c)-1)
             
@@ -127,8 +128,8 @@ if __name__ == "__main__":
 
 
     start = time.time()
-    #print(main("input07.txt"))
+    print(main("input07.txt"))
     end = time.time()
-    print(end - start)
-    unittest.main()
+    print(str(datetime.timedelta(seconds=end-start)))
+    #unittest.main()
     
