@@ -16,7 +16,7 @@ def main(file: str) -> int:
         for y, line in enumerate(liste):
             springs, nums = line.split(" ")
             nums = list(map(int,nums.split(",")))
-            springs = list(springs)            
+            springs = list(springs)
             total_combs += find_combs(springs, nums, 0, 0)
 
         return total_combs

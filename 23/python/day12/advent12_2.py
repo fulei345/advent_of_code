@@ -1,13 +1,84 @@
-import unittest
+import sys
+import functools
 import time
 
-# Lav rekursiv funktion der prøver alt
+@functools.lru_cache(maxsize=None)
+def calc(record, groups):
 
-# index_n direkte før mængder af # (på den jeg er lige nu)
-# check_preceding checker om der kan placeres en # der
-# 
+    # Did we run out of groups? We might still be valid
+    if not groups:
 
-dynamic = set()
+        # Make sure there aren't any more damaged springs, if so, we're valid
+        if "#" not in record:
+            # This will return true even if record is empty, which is valid
+            return 1
+        else:
+            # More damaged springs that we can't fit
+            return 0
+
+    # There are more groups, but no more record
+    if not record:
+        # We can't fit, exit
+        return 0
+
+    # Look at the next element in each record and group
+    next_character = record[0]
+    next_group = groups[0]
+
+    # Logic that treats the first character as pound
+    def pound():
+
+        # If the first is a pound, then the first n characters must be
+        # able to be treated as a pound, where n is the first group number
+        this_group = record[:next_group]
+        this_group = this_group.replace("?", "#")
+
+        # If the next group can't fit all the damaged springs, then abort
+        if this_group != next_group * "#":
+            return 0
+
+        # If the rest of the record is just the last group, then we're
+        # done and there's only one possibility
+        if len(record) == next_group:
+            # Make sure this is the last group
+            if len(groups) == 1:
+                # We are valid
+                return 1
+            else:
+                # There's more groups, we can't make it work
+                return 0
+
+        # Make sure the character that follows this group can be a seperator
+        if record[next_group] in "?.":
+            # It can be seperator, so skip it and reduce to the next group
+            return calc(record[next_group+1:], groups[1:])
+
+        # Can't be handled, there are no possibilites
+        return 0
+
+    # Logic that treats the first character as a dot
+    def dot():
+        # We just skip over the dot looking for the next pound
+        return calc(record[1:], groups)
+
+    if next_character == '#':
+        # Test pound logic
+        out = pound()
+
+    elif next_character == '.':
+        # Test dot logic
+        out = dot()
+
+    elif next_character == '?':
+        # This character could be either character, so we'll explore both
+        # possibilities
+        out = dot() + pound()
+
+    else:
+        raise RuntimeError
+
+    print(record, groups, out)
+    return out
 
 def main(file: str) -> int:
     with open(file) as f:
@@ -18,6 +89,7 @@ def main(file: str) -> int:
         for y, line in enumerate(liste):
             springs, nums = line.split(" ")
             nums = list(map(int,nums.split(",")))
+
             springs = list(springs)
 
             temp = len(nums)
@@ -32,66 +104,12 @@ def main(file: str) -> int:
                 if i != 4:
                     temp.append("?")
 
-            dynamic = set()
+            springs = "".join(temp)
 
-            springs = temp
-            result = find_combs(springs, nums, 0, 0)
-            total_combs += result
+            total_combs += calc(springs, tuple(nums))
 
         return total_combs
 
-# Maybe more input
-def find_combs(springs, nums, index, count):
-    total = 0
-    #print("".join(springs))
-    if index == len(springs): # If we are at the end and all is used good
-        if len(nums) == 0:
-            print("".join(springs))
-            return 1
-        elif count == nums[0] and len(nums) == 1:
-            print("".join(springs))
-            return 1
-        else:
-            return 0
-    
-    if springs[index] == "#":
-        if (check_preceding(springs, index,nums, count)):
-            total += find_combs(springs, nums, index+1, count+1)
-        else:
-            return total
-    elif springs[index] == ".":
-        if count > 0:
-            if count == nums[0]:
-                total += find_combs(springs, nums[1::], index+1, 0)
-            else:
-                return total
-        else:
-            total += find_combs(springs, nums, index+1, 0)
-    else:
-        if (check_preceding(springs, index,nums, count)):
-            springs[index] = "#"
-            total += find_combs(springs, nums, index+1, count+1)
-            springs[index] = "?"
-            if count == 0:
-                springs[index] = "."
-                total += find_combs(springs, nums, index+1, 0)
-                springs[index] = "?"
-        else:
-            if count > 0:
-                if count == nums[0]:
-                    springs[index] = "."
-                    total += find_combs(springs, nums[1::], index+1, 0)
-                    springs[index] = "?"
-            else:
-                springs[index] = "."
-                total += find_combs(springs, nums, index+1, 0)
-                springs[index] = "?"
-    return total
-
-def check_preceding(springs, index, nums , count):
-    if len(nums) == 0:
-        return False
-    return count < nums[0]
 
 if __name__ == "__main__":
     
