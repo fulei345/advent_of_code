@@ -7,8 +7,6 @@ import time
 # check_preceding checker om der kan placeres en # der
 # 
 
-correct = [900, 1200, 2, 10, 9, 1200, 1, 5, 16, 10, 100, 500, 4, 100, 500, 8, 3, 400, 1200, 1, 800, 300, 600, 13, 600, 2, 9, 2, 1000, 7, 16, 400, 800, 900, 1100, 3, 800, 300, 1100, 1200, 200, 6, 800, 800, 200, 200, 800, 600, 5, 500, 12, 800, 1200, 2, 10, 600, 200, 3, 7, 1, 8, 8, 5, 1300, 600, 900, 12, 4, 700, 7, 1, 1000, 500, 300, 16, 8, 1000, 1000, 200, 800, 1000, 2, 600, 1000, 300, 4, 100, 4, 300, 700, 1, 1, 600, 5, 2, 6, 6, 1200, 9, 600, 0]
-print(sum(correct))
 def main(file: str) -> int:
     with open(file) as f:
         liste : list[str] = f.read().splitlines()
@@ -24,11 +22,7 @@ def main(file: str) -> int:
             temp = []
             if len(line) == 0:
                 # Do the thing
-                result = find_reflection(maps, x_maps)
-                if result != correct[count]:
-                    print(count)
-                    print(f"result is {result}  correct is {correct[i]}") 
-                count += 1
+                result = find_reflection(maps, x_maps) 
                 total += result
                 all_totals.append(total)
                 x_maps = []
@@ -42,10 +36,6 @@ def main(file: str) -> int:
                     x_maps[x].append(char)
                 maps.append(temp)
         result = find_reflection(maps, x_maps)
-        if result != correct[count]:
-           print(count)
-           print(f"result is {result}  correct is {correct[i]}") 
-        count += 1
         total += result
         all_totals.append(total)
         return total
@@ -102,10 +92,10 @@ def compare_two(maps, index_1, index_2):
 if __name__ == "__main__":
     
     start = time.time()
-    #result = main("test13.txt")
+    result = main("test13.txt")
     end = time.time()
     expected = 400
-    #assert result == expected, f"Expected {expected} but got {result}"
+    assert result == expected, f"Expected {expected} but got {result}"
     print(end - start)
 
     start = time.time()
