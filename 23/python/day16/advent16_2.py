@@ -1,6 +1,6 @@
 import time
 import sys
-sys.setrecursionlimit(10000000) 
+
 # A 2D map with a lot of mirrors
 
 
