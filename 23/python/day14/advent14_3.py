@@ -42,6 +42,7 @@ def main(file: str) -> int:
         done = False
         count = 0
         lol = 0
+
         while not done:
             one_dir(columns, rows, True)
             one_dir(rows, columns, True)
@@ -54,15 +55,19 @@ def main(file: str) -> int:
                 if all_lists[i] == temp:
                     done = True
                     lol = i+1
+                    #count -= 1
                     break
             all_lists.append(temp)
-        print(count)
+
+        final_grid = all_loads[
+            (1000000000 - lol) % (count + 1 - lol)+ lol]
+
         rest = 1000000000 - lol
         modulo = count-lol
         rest = rest % count-lol
 
         total = all_loads[rest+(lol-2)]
-        return total
+        return final_grid
 
 
 # Forward is forward in the work list
