@@ -1,0 +1,3 @@
+[submodule "aoc_inputs"]
+	path = aoc_inputs
+	url = git@github.com:fulei345/aoc_inputs.git
