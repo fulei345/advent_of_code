@@ -1,6 +1,6 @@
 use ::day_01::procces_part1;
 
 fn main() {
-    let file = std::fs::read_to_string("../../inputs/day1input").expect("Invalid Path");
-    println!("Part1: {}", procces_part1(&file));
+    let file = include_str!("../../../../../aoc_inputs/2015/day1input");
+    println!("Part1: {}", procces_part1(file));
 }

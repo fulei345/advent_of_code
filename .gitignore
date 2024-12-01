@@ -131,3 +131,6 @@ dmypy.json
 .vscode
 
 *txt
+
+# Rust
+*.lock
