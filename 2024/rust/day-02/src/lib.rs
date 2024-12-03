@@ -1,86 +1,50 @@
-use std::cmp::Ordering;
-
-#[derive(PartialEq, Copy, Clone)]
-enum Move {
-    Rock = 1,
-    Paper = 2,
-    Scissors = 3,
-}
-
-impl std::str::FromStr for Move {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "A" | "X" => Ok(Move::Rock),
-            "B" | "Y" => Ok(Move::Paper),
-            "C" | "Z" => Ok(Move::Scissors),
-            _ => Err("Not a known move".to_string()),
-        }
-    }
-}
-
-impl PartialOrd for Move {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        if self == &Move::Scissors && other == &Move::Rock {
-            Some(Ordering::Less)
-        } else if self == &Move::Rock && other == &Move::Scissors {
-            Some(Ordering::Greater)
-        } else {
-            Some((*self as u8).cmp(&(*other as u8)))
-        }
-    }
-}
+use itertools::Itertools;
 
 pub fn procces_part1(input: &str) -> String {
-    let result: u32 = input
+    let result: u16 = input
         .lines()
         .map(|line| {
-            let moves: Vec<Move> = line
-                .split(" ")
-                .map(|s| s.parse::<Move>().unwrap())
+            let levels: Vec<i16> = line
+                .split_whitespace()
+                .map(|num| num.parse::<i16>().unwrap())
                 .collect();
-            match moves[0].partial_cmp(&moves[1]) {
-                Some(Ordering::Equal) => 3 + moves[1] as u32,
-                Some(Ordering::Less) => 6 + moves[1] as u32,
-                Some(Ordering::Greater) => moves[1] as u32,
-                None => {
-                    panic!("Move should be comparable")
-                }
-            }
+
+            procces_line(levels) as u16
         })
         .sum();
     result.to_string()
 }
 
+fn procces_line(nums: Vec<i16>) -> bool {
+    let all_windows = nums.iter().tuple_windows();
+    let not_for = all_windows
+        .clone()
+        .all(|(first, second)| (1 <= (first - second).abs()) && (first - second).abs() <= 3);
+
+    let increasing = all_windows.clone().all(|(first, second)| first < second);
+    let decreasing = all_windows.clone().all(|(first, second)| first > second);
+    not_for && (increasing || decreasing)
+}
+
 pub fn procces_part2(input: &str) -> String {
-    let result: u32 = input
+    let result: u16 = input
         .lines()
         .map(|line| {
-            let moves: Vec<&str> = line.split(" ").collect();
-            let opponent_move = moves[0].parse::<Move>().unwrap();
-            match moves[1] {
-                "X" => {
-                    let our_move = match opponent_move {
-                        Move::Rock => Move::Scissors,
-                        Move::Paper => Move::Rock,
-                        Move::Scissors => Move::Paper,
-                    };
-                    our_move as u32
-                }
-                "Y" => 3 + opponent_move as u32,
-                "Z" => {
-                    let our_move = match opponent_move {
-                        Move::Rock => Move::Paper,
-                        Move::Paper => Move::Scissors,
-                        Move::Scissors => Move::Rock,
-                    };
-                    6 + our_move as u32
-                }
-                _ => {
-                    panic!("Unexpected response");
+            let levels: Vec<i16> = line
+                .split_whitespace()
+                .map(|num| num.parse::<i16>().unwrap())
+                .collect();
+
+            let mut is_safe = procces_line(levels.clone());
+            if !is_safe {
+                // Try Every possible combination
+                for i in 0..levels.clone().len(){
+                    let new = [&levels[..i], &levels[i+1..]].concat();
+                    is_safe = procces_line(new);
+                    if is_safe {break}
                 }
             }
+            is_safe as u16
         })
         .sum();
     result.to_string()
@@ -90,19 +54,30 @@ pub fn procces_part2(input: &str) -> String {
 mod tests {
     use super::*;
 
-    const INPUT: &str = "A Y
-B X
-C Z";
+    const INPUT1: &str = "7 6 4 2 1";
+    const INPUT2: &str = "1 2 7 8 9";
+    const INPUT3: &str = "9 7 6 2 1";
+    const INPUT4: &str = "1 3 2 4 5";
+    const INPUT5: &str = "8 6 4 4 1";
+    const INPUT6: &str = "1 3 6 7 9";
 
     #[test]
     fn part1_works() {
-        let result = procces_part1(INPUT);
-        assert_eq!(result, "15");
+        assert_eq!(procces_part1(INPUT1), "1");
+        assert_eq!(procces_part1(INPUT2), "0");
+        assert_eq!(procces_part1(INPUT3), "0");
+        assert_eq!(procces_part1(INPUT4), "0");
+        assert_eq!(procces_part1(INPUT5), "0");
+        assert_eq!(procces_part1(INPUT6), "1");
     }
 
     #[test]
     fn part2_works() {
-        let result = procces_part2(INPUT);
-        assert_eq!(result, "12");
+        assert_eq!(procces_part2(INPUT1), "1");
+        assert_eq!(procces_part2(INPUT2), "0");
+        assert_eq!(procces_part2(INPUT3), "0");
+        assert_eq!(procces_part2(INPUT4), "1");
+        assert_eq!(procces_part2(INPUT5), "1");
+        assert_eq!(procces_part2(INPUT6), "1");
     }
 }

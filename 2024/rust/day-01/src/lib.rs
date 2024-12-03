@@ -1,35 +1,61 @@
-pub fn procces_part1(input: &str) -> String {
-    let mut firstcol: Vec<u32> = vec![];
-    let mut secondcol: Vec<u32> = vec![];
-    let _ = input.lines()
-    .map(|l| {
-        let both: Vec<u32> = l.split("   ")
-        .map(|item| item.parse::<u32>().unwrap()).collect();
-        firstcol.push(both[0]);
-        secondcol.push(both[1]);
-        dbg!(both);
-    });
-    firstcol.sort();
-    secondcol.sort();
+use std::collections::HashMap;
 
-    let result: u32 = firstcol.iter().zip(secondcol.iter()).map(|(&f, &s)| f.abs_diff(s)).sum();
+pub fn procces_part1(input: &str) -> String {
+    let mut left = vec![];
+    let mut right = vec![];
+
+
+    for line in input.lines() {
+        let mut items = line.split_whitespace();
+        left.push(
+            items.next().unwrap().parse::<i32>().unwrap(),
+        );
+        right.push(
+            items.next().unwrap().parse::<i32>().unwrap(),
+        );
+    }
+
+    left.sort();
+    right.sort();
+
+    let result: i32 = std::iter::zip(left, right)
+        .map(|(l, r)| (l - r).abs())
+        .sum();
         
     result.to_string()
 }
 
 pub fn procces_part2(input: &str) -> String {
-    let mut result = input
-        .split("\n\n")
-        .map(|elf_load| {
-            elf_load
-                .lines()
-                .map(|item| item.parse::<u32>().unwrap())
-                .sum::<u32>()
+    let mut left = vec![];
+    let mut right: HashMap<usize, usize> = HashMap::new();
+
+    for line in input.lines() {
+        let mut items = line.split_whitespace();
+        left.push(
+            items.next().unwrap().parse::<usize>().unwrap(),
+        );
+        right
+            .entry(
+                items
+                    .next()
+                    .unwrap()
+                    .parse::<usize>()
+                    .unwrap(),
+            )
+            .and_modify(|v| {
+                *v += 1;
+            })
+            .or_insert(1);
+    }
+
+    let result: usize = left
+        .iter()
+        .map(|number| {
+            number * right.get(number).unwrap_or(&0)
         })
-        .collect::<Vec<_>>();
-    result.sort_by(|a, b| b.cmp(a));
-    let sum: u32 = result.iter().take(3).sum();
-    sum.to_string()
+        .sum();
+
+    result.to_string()
 }
 
 #[cfg(test)]
@@ -52,6 +78,6 @@ mod tests {
     #[test]
     fn part2_works() {
         let result = procces_part2(INPUT);
-        assert_eq!(result, "45000");
+        assert_eq!(result, "31");
     }
 }
