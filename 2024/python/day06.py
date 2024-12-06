@@ -6,10 +6,6 @@ path = {}
 # north 0, east 1, south 2, west 3
 facing = 0
 
-for index, line in enumerate(ls):
-    for i, char in enumerate(line):
-        if char == '#':
-            obstacles[]
 
 
 
