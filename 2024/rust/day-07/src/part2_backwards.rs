@@ -1,5 +1,3 @@
-// Using fold with an accumilator
-
 #[tracing::instrument]
 pub fn process(_input: &str) -> miette::Result<String> {
     let result = itertools::fold(_input.lines(), 0, |a, line| {
@@ -19,6 +17,7 @@ pub fn process(_input: &str) -> miette::Result<String> {
             a
         }
     });
+
     Ok(result.to_string())
 }
 
@@ -30,15 +29,14 @@ fn check_line(nums: &[usize], current_total: usize) -> bool {
     if current_total == *last {
         return true;
     }
-    let last = nums.last().unwrap();
-    let modulo = current_total % last;
-    if modulo == 0 {
-        return check_line(&nums[..nums.len() - 1], current_total / last);
-    }
-    if current_total > *last {
-        return check_line(&nums[..nums.len() - 1], current_total - last);
-    }
-    return false;
+    let mask = (10_u64.pow(last.ilog10() as u32 + 1)) as usize;
+
+    // Just a (bool &&  recursive call) where the bool is the condition to call that
+    return (current_total % mask == *last
+        && check_line(&nums[..nums.len() - 1], current_total / mask))
+        || (current_total % last == 0
+            && check_line(&nums[..nums.len() - 1], current_total / last))
+        || (current_total > *last && check_line(&nums[..nums.len() - 1], current_total - last));
 }
 
 #[cfg(test)]
@@ -56,7 +54,7 @@ mod tests {
 192: 17 8 14
 21037: 9 7 18 13
 292: 11 6 16 20";
-        assert_eq!("3749", process(input)?);
+        assert_eq!("11387", process(input)?);
         Ok(())
     }
 }

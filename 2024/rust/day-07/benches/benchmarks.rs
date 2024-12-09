@@ -20,3 +20,11 @@ fn part2() {
     )))
     .unwrap();
 }
+
+#[divan::bench]
+fn part2_backwards() {
+    part2_backwards::process(divan::black_box(include_str!(
+        "../../../../aoc_inputs/2024/day07input",
+    )))
+    .unwrap();
+}
