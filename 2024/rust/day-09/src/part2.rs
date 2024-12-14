@@ -54,13 +54,13 @@ pub fn process(_input: &str) -> miette::Result<String> {
             chunks.entry(chunk).and_modify(|vec| *vec = new_chunk);
         }
     }
-    let mut result: u64 = 0;
+    let mut result: u128 = 0;
     for (chunk_index, vec) in chunks.clone() {
-        let num = chunk_index.parse::<u32>().unwrap();
+        let num = chunk_index.parse::<u128>().unwrap();
 
         for (index, count) in vec {
             for i in 0..count {
-                result += (num * (index + i)) as u64
+                result += (num * (index + i) as u128)
             }
         }
     }
@@ -87,6 +87,20 @@ mod tests {
             .last()
             .unwrap();
         assert_eq!(result, process(input)?);
+        Ok(())
+    }
+
+    #[test]
+    fn upping() -> miette::Result<()> {
+        let input = include_str!("input.txt");
+        assert_eq!("97898222299196", process(input)?);
+        Ok(())
+    }
+
+    #[test]
+    fn evil() -> miette::Result<()> {
+        let input = include_str!("really_evil_input.txt");
+        assert_eq!("5799706413896802", process(input)?);
         Ok(())
     }
 }
