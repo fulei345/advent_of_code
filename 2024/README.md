@@ -43,3 +43,36 @@ In part 2 find a pattern they make
 # Day 15: Warehouse Woes
 2D map with objects and a person
 And a list of instruction on that person
+
+# Day 16: Reindeer Maze
+2D map where you are gonna find all the optimal paths for the race
+
+# Day 17: Chronospatial Computer
+3 Registers and a list of instruction which can loop
+Part 2 find which input gives the same program
+
+# Day 18: RAM Run
+Ram is falling on a 2D square plane
+We gotta find after a number of those bytes is falling what the optimal path is
+And part 2 find when the paths gets cut off
+
+# Day 19: Linen Layout
+A combinations of lines material needs to be made to towels
+Combination problem, we need to find out if they can be made with what we have
+In Part 2 find all combinations of how we can make the towels
+
+# Day 20: Race Condition
+2D map where we race against a program
+and we can disable collision for some time to save some time to the end
+We need to find how many of those which saves us 100 or more
+Eah jump who starts and ends the same place are the same121
+
+# Day 21: Keypad Conundrum
+We have some amount of robots which needs to press some buttons
+They are chained and we need to press the last robot
+Find the minimum steps for us to press on the robot
+
+# Day 22 Monkey Market
+We gets  a list of monkeys secret number and needs to generate their pseudorandom number
+Then find their 2000 th pseudo number.
+In part 2 we find which sequence of 4 differences in price gets the max bananas for our hiding spot

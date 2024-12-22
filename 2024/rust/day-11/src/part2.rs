@@ -1,69 +1,41 @@
 use std::collections::HashMap;
 
+fn count(stone: u128, steps: u128, map: &mut HashMap<(u128, u128), u128>) -> u128 {
+    if map.contains_key(&(stone, steps)) {
+        return map[&(stone, steps)];
+    }
+    let result;
+    let string = stone.to_string();
+    let lenght: usize = string.len();
+    if steps == 0 {
+        result = 1;
+    } else if stone == 0 {
+        result = count(1, steps - 1, map);
+    } else if lenght % 2 == 0 {
+        let base: u128 = 10;
+        let divisor = base.pow((lenght / 2) as u32);
+
+        let first_half = stone / divisor; // First half
+        let second_half = stone % divisor; // Second half
+        result = count(first_half, steps - 1, map) + count(second_half, steps - 1, map);
+    } else {
+        result = count(stone * 2024, steps - 1, map);
+    }
+    map.insert((stone, steps), result);
+    return result;
+}
+
 #[tracing::instrument]
-pub fn process(_input: &str) -> miette::Result<String> {
-    let mut stones: HashMap<String, usize> = HashMap::default();
-    let mut two: HashMap<String, (String, String)> = HashMap::default();
-    let mut one: HashMap<String, String> = HashMap::default();
+pub fn process(input: &str) -> miette::Result<String> {
+    let mut map: HashMap<(u128, u128), u128> = HashMap::new();
+    const ITERATIONS: u128 = 75;
 
-    one.insert(String::from("0"), String::from("1"));
+    let stones = input
+        .trim()
+        .split(" ")
+        .map(|num| num.parse::<u128>().unwrap());
 
-    for num in _input.split_whitespace() {
-        stones.insert(num.to_string(), 1);
-    }
-    for _ in 0..75 {
-        let mut new = stones.clone();
-        for (number, count) in &stones {
-            if number.len() % 2 == 0 {
-                if two.contains_key(number) {
-                    let (first, second) = two.get(number).unwrap();
-                    new.entry((*first.clone()).to_string())
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                    new.entry((*second.clone()).to_string())
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                } else {
-                    let half = number.len() / 2;
-                    let first = number[0..half].to_string();
-                    let second = number[half..].to_string();
-                    let second: String = second.parse::<u64>().unwrap().to_string();
-                    two.insert((*number).clone(), (first.clone(), second.clone()));
-
-                    new.entry(first)
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                    new.entry(second)
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                }
-            } else {
-                if one.contains_key(number) {
-                    let num = one.get(number).unwrap();
-                    new.entry((*num.clone()).to_string())
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                } else {
-                    // Should be odd here
-                    let num = number.parse::<u64>().unwrap();
-                    one.insert((*number).clone(), (num * 2024).to_string());
-
-                    new.entry((num * 2024).to_string())
-                        .and_modify(|f| *f += count)
-                        .or_insert(*count);
-                }
-            }
-            new.entry((*number.clone()).to_string())
-                .and_modify(|f| *f -= count);
-        }
-
-        stones.clear();
-        stones = new.clone();
-        // dbg!(&stones);
-    }
-
-    let result: usize = stones.values().sum();
-
+    let result: u128 = stones.map(|stone| count(stone, ITERATIONS, &mut map)).sum();
     Ok(result.to_string())
 }
 
