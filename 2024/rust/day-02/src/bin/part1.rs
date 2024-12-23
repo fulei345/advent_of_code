@@ -1,11 +1,11 @@
-use day_01::part1::process;
+use day_02::part1::process;
 use miette::Context;
 
 #[tracing::instrument]
 fn main() -> miette::Result<()> {
     tracing_subscriber::fmt::init();
 
-    let file = include_str!("../../../../../aoc_inputs/2024/day01input.txt");
+    let file = include_str!("../../../../../aoc_inputs/2024/day02input.txt");
     let result = process(file).context("process part 1")?;
     println!("{}", result);
     Ok(())
