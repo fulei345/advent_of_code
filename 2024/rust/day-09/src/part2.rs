@@ -81,8 +81,8 @@ mod tests {
 
     #[test]
     fn test_real_input() -> miette::Result<()> {
-        let input = include_str!("../../../../aoc_inputs/2024/day09input");
-        let result = include_str!("../../../../aoc_inputs/2024/day09result")
+        let input = include_str!("../../../../aoc_inputs/2024/day09input.txt");
+        let result = include_str!("../../../../aoc_inputs/2024/day09result.txt")
             .lines()
             .last()
             .unwrap();

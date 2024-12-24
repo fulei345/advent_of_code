@@ -8,7 +8,7 @@ fn main() {
 #[divan::bench]
 fn part1() {
     part1::process(divan::black_box(include_str!(
-        "../../../../aoc_inputs/2024/day07input",
+        "../../../../aoc_inputs/2024/day07input.txt",
     )))
     .unwrap();
 }
@@ -16,7 +16,7 @@ fn part1() {
 #[divan::bench]
 fn part2() {
     part2::process(divan::black_box(include_str!(
-        "../../../../aoc_inputs/2024/day07input",
+        "../../../../aoc_inputs/2024/day07input.txt",
     )))
     .unwrap();
 }
@@ -24,7 +24,7 @@ fn part2() {
 #[divan::bench]
 fn part2_backwards() {
     part2_backwards::process(divan::black_box(include_str!(
-        "../../../../aoc_inputs/2024/day07input",
+        "../../../../aoc_inputs/2024/day07input.txt",
     )))
     .unwrap();
 }

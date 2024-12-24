@@ -5,7 +5,7 @@ use miette::Context;
 fn main() -> miette::Result<()> {
     tracing_subscriber::fmt::init();
 
-    let file = include_str!("../../../../../aoc_inputs/2024/day08input");
+    let file = include_str!("../../../../../aoc_inputs/2024/day08input.txt");
     let result = process(file).context("process part 1")?;
     println!("{}", result);
     Ok(())
